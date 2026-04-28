@@ -48,10 +48,10 @@
   "homepage": "https://doomscrollr.com/api",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/aaayersss/doomscrollr-api-js.git"
+    "url": "git+https://github.com/DOOMSCROLLR/npm.git"
   },
   "bugs": {
-    "url": "https://github.com/aaayersss/doomscrollr-api-js/issues"
+    "url": "https://github.com/DOOMSCROLLR/npm/issues"
   },
   "engines": {
     "node": ">=18"
