@@ -1,6 +1,8 @@
 export * from "./types.js";
 
 import type {
+  BuildFlowParams,
+  BuildLinksFlowParams,
   BulkIdsParams,
   CaptureSettingsUpdate,
   CreateContactPageParams,
@@ -12,13 +14,17 @@ import type {
   ListAudienceParams,
   ListPostsParams,
   ListProductsParams,
+  FlowResponse,
   Paginated,
   PinterestPin,
   Post,
   Product,
+  PostShopmyProductsParams,
+  PostShopmyProductsResponse,
   Profile,
   RateLimitInfo,
   RegisterParams,
+  RegisterResponse,
   RequestOptions,
   SearchPinterestAndPostParams,
   SearchPinterestParams,
@@ -128,7 +134,7 @@ export class DoomscrollrApi {
 
   // Registration (no auth required)
   register(params: RegisterParams, options?: RequestOptions) {
-    return this.request("POST", "/register", params as unknown as Record<string, unknown>, options);
+    return this.request<RegisterResponse>("POST", "/register", params as unknown as Record<string, unknown>, options);
   }
 
   // Hub/profile
@@ -160,6 +166,10 @@ export class DoomscrollrApi {
 
   showPost(id: number, options?: RequestOptions) {
     return this.request<Post>("GET", `/posts/${id}`, undefined, options);
+  }
+
+  getPost(id: number, options?: RequestOptions) {
+    return this.showPost(id, options);
   }
 
   updatePost(id: number, params: Partial<CreateLinkPostParams & CreateImagePostParams>, options?: RequestOptions) {
@@ -196,6 +206,10 @@ export class DoomscrollrApi {
     return this.request<Subscriber>("GET", `/audience/${id}`, undefined, options);
   }
 
+  getSubscriber(id: number, options?: RequestOptions) {
+    return this.showSubscriber(id, options);
+  }
+
   updateSubscriber(id: number, params: SubscriberParams, options?: RequestOptions) {
     return this.request<Subscriber>("PATCH", `/audience/${id}`, params, options);
   }
@@ -224,6 +238,10 @@ export class DoomscrollrApi {
 
   showProduct(id: number, options?: RequestOptions) {
     return this.request<Product>("GET", `/products/${id}`, undefined, options);
+  }
+
+  getProduct(id: number, options?: RequestOptions) {
+    return this.showProduct(id, options);
   }
 
   updateProduct(id: number, params: UpdateProductParams, options?: RequestOptions) {
@@ -330,6 +348,52 @@ export class DoomscrollrApi {
 
   updateCapture(params: CaptureSettingsUpdate, options?: RequestOptions) {
     return this.request("PATCH", "/capture", params, options);
+  }
+
+  updateCaptureSettings(params: CaptureSettingsUpdate, options?: RequestOptions) {
+    return this.updateCapture(params, options);
+  }
+
+  // Replacement flows
+  buildLinktree(params: BuildLinksFlowParams, options?: RequestOptions) {
+    return this.request<FlowResponse>("POST", "/flows/linktree", params as unknown as Record<string, unknown>, options);
+  }
+
+  buildKomi(params: BuildLinksFlowParams, options?: RequestOptions) {
+    return this.request<FlowResponse>("POST", "/flows/komi", params as unknown as Record<string, unknown>, options);
+  }
+
+  buildShopify(params: BuildFlowParams = {}, options?: RequestOptions) {
+    return this.request<FlowResponse>("POST", "/flows/shopify", params, options);
+  }
+
+  buildEcommerce(params: BuildFlowParams = {}, options?: RequestOptions) {
+    return this.request<FlowResponse>("POST", "/flows/ecommerce", params, options);
+  }
+
+  buildSubstack(params: BuildFlowParams = {}, options?: RequestOptions) {
+    return this.request<FlowResponse>("POST", "/flows/substack", params, options);
+  }
+
+  buildNewsletter(params: BuildFlowParams = {}, options?: RequestOptions) {
+    return this.request<FlowResponse>("POST", "/flows/newsletter", params, options);
+  }
+
+  buildWebsite(params: BuildFlowParams = {}, options?: RequestOptions) {
+    return this.request<FlowResponse>("POST", "/flows/website", params, options);
+  }
+
+  buildSocialFeed(params: BuildFlowParams = {}, options?: RequestOptions) {
+    return this.request<FlowResponse>("POST", "/flows/social-feed", params, options);
+  }
+
+  buildMembership(params: BuildFlowParams = {}, options?: RequestOptions) {
+    return this.request<FlowResponse>("POST", "/flows/membership", params, options);
+  }
+
+  // Affiliate
+  postShopmyProducts(params: PostShopmyProductsParams, options?: RequestOptions) {
+    return this.request<PostShopmyProductsResponse>("POST", "/affiliate/shopmy/posts", params as unknown as Record<string, unknown>, options);
   }
 
   // Curation theme

@@ -5,5 +5,5 @@ const doomscrollr = DoomscrollrApi.fromEnv();
 const profile = await doomscrollr.getProfile();
 console.log(`Connected to @${profile.username ?? "unknown"}`);
 
-const posts = await doomscrollr.listPosts({ per_page: 5 });
-console.log(posts.data?.map((post) => post.title));
+const posts = await doomscrollr.listPosts({ per_page: 5, status: "published" });
+console.log(posts.data.map((post) => post.title ?? `Post ${post.id}`));

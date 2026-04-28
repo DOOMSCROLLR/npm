@@ -1,16 +1,20 @@
 # @doomscrollr/api
 
-Typed JavaScript/TypeScript client for the [DOOMSCROLLR](https://doomscrollr.com) REST API.
+Official typed JavaScript/TypeScript SDK for the [DOOMSCROLLR](https://doomscrollr.com) REST API.
 
-Use this when you want a normal SDK for app/server code. If you are connecting an AI agent over MCP, use [`@doomscrollr/mcp-server`](https://www.npmjs.com/package/@doomscrollr/mcp-server) instead.
+Use it from Node.js, serverless functions, workers, and modern runtimes that provide `fetch`. If you are connecting an AI agent over MCP, use [`@doomscrollr/mcp-server`](https://www.npmjs.com/package/@doomscrollr/mcp-server) instead.
 
-## Install
+## Installation
 
 ```bash
 npm install @doomscrollr/api
 ```
 
-## Quick start
+Requirements: Node.js 18+ or any runtime with a compatible `fetch` implementation.
+
+## Authentication
+
+Create an API key in the DOOMSCROLLR dashboard and pass it as a Bearer token through the client:
 
 ```ts
 import { DoomscrollrApi } from "@doomscrollr/api";
@@ -18,9 +22,36 @@ import { DoomscrollrApi } from "@doomscrollr/api";
 const doomscrollr = new DoomscrollrApi({
   apiKey: process.env.DOOMSCROLLR_API_KEY,
 });
+```
+
+You can also read configuration from environment variables:
+
+```ts
+const doomscrollr = DoomscrollrApi.fromEnv();
+```
+
+Supported variables:
+
+- `DOOMSCROLLR_API_KEY` — dashboard API key
+- `DOOMSCROLLR_API_BASE` — optional API base URL override; defaults to `https://doomscrollr.com/api/v1`
+
+The SDK sends authenticated requests as:
+
+```http
+Authorization: Bearer <DOOMSCROLLR_API_KEY>
+```
+
+`register()` is the only method that does not require an existing API key.
+
+## Quick start
+
+```ts
+import { DoomscrollrApi } from "@doomscrollr/api";
+
+const doomscrollr = DoomscrollrApi.fromEnv();
 
 const profile = await doomscrollr.getProfile();
-console.log(profile.username);
+console.log(`Connected to @${profile.username}`);
 
 await doomscrollr.createLinkPost({
   url: "https://example.com/article",
@@ -30,33 +61,68 @@ await doomscrollr.createLinkPost({
 });
 ```
 
-Or use environment variables:
-
-```ts
-import { DoomscrollrApi } from "@doomscrollr/api";
-
-const doomscrollr = DoomscrollrApi.fromEnv();
-```
-
-Supported env vars:
-
-- `DOOMSCROLLR_API_KEY` — dashboard API key
-- `DOOMSCROLLR_API_BASE` — optional override, defaults to `https://doomscrollr.com/api/v1`
-
 ## Common workflows
 
-### Search Pinterest and create DOOMSCROLLR posts
+### List posts with pagination and filters
 
 ```ts
-await doomscrollr.searchPinterestAndPost({
-  query: "air cooled Porsche",
-  limit: 3,
-  status: "draft",
-  tags: "porsche,cars,inspiration",
+const page = await doomscrollr.listPosts({
+  page: 1,
+  per_page: 20,
+  status: "published",
+  tag: "research",
+  q: "porsche",
+});
+
+for (const post of page.data) {
+  console.log(post.id, post.title);
+}
+
+console.log(`Page ${page.current_page} of ${page.last_page ?? "?"}`);
+```
+
+List methods return API pagination metadata when available:
+
+- `data`
+- `current_page`
+- `last_page`
+- `per_page`
+- `total`
+
+Supported filters include:
+
+- `listPosts({ page, per_page, q, status, tag })`
+- `listAudience({ page, per_page, q, tag, bounced })`
+- `listProducts({ page, per_page, q, type, min_price, max_price })`
+
+### Create an image post
+
+```ts
+await doomscrollr.createImagePost({
+  image: "https://example.com/photo.jpg",
+  title: "New drop",
+  description: "Behind the scenes.",
+  tags: "drop,bts",
+  status: "scheduled",
+  publish_at: "2026-05-01T17:00:00Z",
 });
 ```
 
-### Create a product from a photo
+### Manage audience records
+
+```ts
+await doomscrollr.addSubscriber({
+  email: "subscriber@example.com",
+  first_name: "Ada",
+  tags: ["launch", "vip"],
+  source: "website",
+});
+
+const csv = await doomscrollr.exportAudience({ tag: "launch" });
+console.log(csv);
+```
+
+### Create a product
 
 ```ts
 await doomscrollr.createProduct({
@@ -69,82 +135,126 @@ await doomscrollr.createProduct({
 });
 ```
 
-### See which posts are getting the most likes
+### Build owned replacement flows
 
 ```ts
-const analytics = await doomscrollr.topLikedPosts({ days: 30, limit: 10 });
-console.log(analytics);
-```
-
-### Create a LinkTree-style contact page and add it to navigation
-
-```ts
-await doomscrollr.createContactPage({
-  title: "Contact",
-  intro: "Find me here.",
+await doomscrollr.buildLinktree({
+  title: "Links",
+  intro: "Everything in one owned place.",
+  style_preset: "brutalist",
   add_to_navigation: true,
   links: [
-    { label: "Instagram", url: "https://instagram.com/doomscrollr" },
-    { label: "Shop", url: "https://doomscrollr.com" },
-    { label: "Email", url: "mailto:hello@doomscrollr.com" },
+    { label: "Shop", url: "https://example.com/shop" },
+    { label: "Newsletter", url: "https://example.com/newsletter" },
+  ],
+});
+
+await doomscrollr.buildSocialFeed({
+  title: "Moodboard",
+  source_query: "air cooled Porsche",
+  limit: 6,
+});
+```
+
+Available flow helpers:
+
+- `buildLinktree()`
+- `buildKomi()`
+- `buildShopify()`
+- `buildEcommerce()`
+- `buildSubstack()`
+- `buildNewsletter()`
+- `buildWebsite()`
+- `buildSocialFeed()`
+- `buildMembership()`
+
+### Post ShopMy affiliate recommendations
+
+```ts
+await doomscrollr.postShopmyProducts({
+  collection_title: "Holiday gifts under $100",
+  use_case: "gift guide",
+  status: "draft",
+  products: [
+    {
+      url: "https://shopmy.us/example-product",
+      note: "Great texture, easy gift.",
+    },
   ],
 });
 ```
 
-### Update styling/settings
+### Get embed/capture settings
 
 ```ts
-await doomscrollr.updateSettings({
-  user_theme: "light",
-  desktop_grid: 3,
-  mobile_grid: 2,
-  text_alignment: "center",
-  post_spacing: 36,
-  buy_button_background_color: "#111111",
-  buy_button_text_color: "#F6F1EA",
+const embed = await doomscrollr.getEmbedCode();
+await doomscrollr.updateCaptureSettings({
+  headline: "Join the list",
+  enabled: true,
 });
 ```
 
-## API surface
+## Error handling and rate limits
 
-The client covers the authenticated API v1 surfaces used by DOOMSCROLLR MCP and dashboard AI:
-
-- profile/settings
-- posts and image posts
-- audience/subscribers and CSV export
-- products, variants, inventory, and bulk operations
-- domains
-- Pinterest/RSS/Instagram integrations
-- capture widget/embed code
-- pages/contact pages/navigation
-- top-liked-post analytics
-- curation theme
-
-## Errors and rate limits
-
-Failed responses throw `DoomscrollrApiError`:
+Failed responses throw `DoomscrollrApiError` with the HTTP status, response payload, and rate-limit metadata when the API provides it.
 
 ```ts
+import { DoomscrollrApiError } from "@doomscrollr/api";
+
 try {
   await doomscrollr.getProfile();
 } catch (error) {
   if (error instanceof DoomscrollrApiError) {
-    console.log(error.status);
-    console.log(error.data);
-    console.log(error.rateLimit?.remaining);
+    console.error(error.status);
+    console.error(error.data);
+
+    if (error.status === 429) {
+      console.error(`Rate limit resets at ${error.rateLimit?.reset}`);
+    }
+  } else {
+    throw error;
   }
 }
 ```
 
-## Auth
+The API returns `X-RateLimit-Limit`, `X-RateLimit-Remaining`, and `X-RateLimit-Reset` headers on rate-limited responses; the SDK exposes them as `error.rateLimit`.
 
-The REST API uses:
+## Request cancellation
 
-```http
-Authorization: Bearer <DOOMSCROLLR_API_KEY>
+Every method accepts an optional `{ signal }` request option:
+
+```ts
+const controller = new AbortController();
+const posts = await doomscrollr.listPosts({ per_page: 10 }, { signal: controller.signal });
 ```
 
-Get an API key from the DOOMSCROLLR dashboard.
+## Low-level requests
+
+For new API endpoints that are not yet wrapped by a helper, use `request()` directly:
+
+```ts
+const result = await doomscrollr.request("GET", "/profile");
+```
+
+`textRequest()` is available for text responses such as CSV exports.
+
+## API coverage
+
+The SDK covers the DOOMSCROLLR API v1 surfaces for:
+
+- account registration
+- profile and settings
+- posts, image posts, and bulk post operations
+- audience/subscribers, bulk operations, and CSV export
+- products, variants, inventory, and bulk product operations
+- domains
+- Pinterest, Instagram, and RSS integrations
+- embed code and capture widget settings
+- pages/contact pages/navigation
+- top-liked-post analytics
+- curation theme
+- owned replacement flows
+- ShopMy affiliate recommendations
 
 ## License
 

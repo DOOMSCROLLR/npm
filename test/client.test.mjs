@@ -42,6 +42,39 @@ test("serializes JSON bodies for write requests", async () => {
   assert.equal(product.id, 123);
 });
 
+test("wraps owned flow and affiliate endpoints", async () => {
+  const calls = [];
+  const client = new DoomscrollrApi({
+    apiKey: "test-key",
+    baseUrl: "https://example.test/api/v1",
+    fetch: mockFetch((url, init) => {
+      calls.push({ url, init });
+      return Response.json({ ok: true });
+    }),
+  });
+
+  await client.buildLinktree({
+    title: "Links",
+    links: [{ label: "Shop", url: "https://example.test/shop" }],
+  });
+  await client.postShopmyProducts({
+    products: [{ url: "https://shopmy.us/example" }],
+    status: "draft",
+  });
+
+  assert.equal(calls[0].url, "https://example.test/api/v1/flows/linktree");
+  assert.equal(calls[0].init.method, "POST");
+  assert.deepEqual(JSON.parse(String(calls[0].init.body)), {
+    title: "Links",
+    links: [{ label: "Shop", url: "https://example.test/shop" }],
+  });
+  assert.equal(calls[1].url, "https://example.test/api/v1/affiliate/shopmy/posts");
+  assert.deepEqual(JSON.parse(String(calls[1].init.body)), {
+    products: [{ url: "https://shopmy.us/example" }],
+    status: "draft",
+  });
+});
+
 test("throws DoomscrollrApiError with rate limit metadata", async () => {
   const client = new DoomscrollrApi({
     apiKey: "test-key",

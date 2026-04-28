@@ -1,7 +1,7 @@
 {
   "name": "@doomscrollr/api",
   "version": "0.1.0",
-  "description": "Typed JavaScript/TypeScript client for the DOOMSCROLLR REST API.",
+  "description": "Official typed JavaScript/TypeScript SDK for the DOOMSCROLLR REST API.",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -13,8 +13,10 @@
   },
   "files": [
     "dist/",
+    "examples/",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "CHANGELOG.md"
   ],
   "scripts": {
     "build": "tsc",
@@ -24,13 +26,22 @@
   },
   "keywords": [
     "doomscrollr",
-    "api",
+    "doomscrollr-api",
+    "api-client",
     "sdk",
     "typescript",
+    "javascript",
+    "rest-api",
     "owned-audience",
+    "creator-tools",
     "creator-economy",
     "newsletter",
-    "commerce"
+    "commerce",
+    "subscribers",
+    "link-in-bio",
+    "linktree",
+    "shopify",
+    "mcp"
   ],
   "author": "DOOMSCROLLR",
   "license": "MIT",
@@ -48,5 +59,10 @@
   "devDependencies": {
     "@types/node": "^25.6.0",
     "typescript": "^6.0.3"
+  },
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   }
 }
