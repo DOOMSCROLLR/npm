@@ -36,6 +36,8 @@ import type {
 } from "./types.js";
 
 export const DEFAULT_BASE_URL = "https://doomscrollr.com/api/v1";
+export const DOOMSCROLLR_API_CLIENT = "@doomscrollr/api";
+export const DOOMSCROLLR_API_CLIENT_VERSION = "0.1.1";
 
 export class DoomscrollrApiError extends Error {
   readonly status: number;
@@ -82,6 +84,8 @@ export class DoomscrollrApi {
     const url = this.buildUrl(path, method === "GET" || method === "HEAD" ? body : undefined);
     const headers: Record<string, string> = {
       Accept: "application/json",
+      "X-Doomscrollr-Client": DOOMSCROLLR_API_CLIENT,
+      "X-Doomscrollr-Client-Version": DOOMSCROLLR_API_CLIENT_VERSION,
     };
 
     const init: RequestInit = { method, headers };
@@ -112,6 +116,8 @@ export class DoomscrollrApi {
     const url = this.buildUrl(path, method === "GET" || method === "HEAD" ? body : undefined);
     const headers: Record<string, string> = {
       Accept: "text/csv, text/plain, application/json",
+      "X-Doomscrollr-Client": DOOMSCROLLR_API_CLIENT,
+      "X-Doomscrollr-Client-Version": DOOMSCROLLR_API_CLIENT_VERSION,
     };
 
     const init: RequestInit = { method, headers };

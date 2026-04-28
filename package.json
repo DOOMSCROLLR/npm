@@ -1,6 +1,6 @@
 {
   "name": "@doomscrollr/api",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Official typed JavaScript/TypeScript SDK for the DOOMSCROLLR REST API.",
   "type": "module",
   "main": "./dist/index.js",

@@ -1,6 +1,8 @@
 # @doomscrollr/api
 
-Official typed JavaScript/TypeScript SDK for the [DOOMSCROLLR](https://doomscrollr.com) REST API.
+Official typed JavaScript/TypeScript SDK for the [DOOMSCROLLR](https://doomscrollr.com?utm_source=github&utm_medium=readme&utm_campaign=developer_funnel&utm_content=api_homepage) REST API.
+
+Use it when your app, automation, or AI workflow needs owned-audience primitives: posts, pages, products, subscribers, capture widgets, domains, analytics, and replacement flows. For public inspiration, see [`doomscrollr.com/featured`](https://doomscrollr.com/featured?utm_source=github&utm_medium=readme&utm_campaign=developer_funnel&utm_content=api_featured_examples).
 
 Use it from Node.js, serverless functions, workers, and modern runtimes that provide `fetch`. If you are connecting an AI agent over MCP, use [`@doomscrollr/mcp-server`](https://www.npmjs.com/package/@doomscrollr/mcp-server) instead.
 
@@ -14,7 +16,7 @@ Requirements: Node.js 18+ or any runtime with a compatible `fetch` implementatio
 
 ## Authentication
 
-Create an API key in the DOOMSCROLLR dashboard and pass it as a Bearer token through the client:
+Create an API key in the [DOOMSCROLLR dashboard](https://doomscrollr.com/register?free=1&utm_source=github&utm_medium=readme&utm_campaign=developer_funnel&utm_content=api_get_api_key) and pass it as a Bearer token through the client:
 
 ```ts
 import { DoomscrollrApi } from "@doomscrollr/api";
