@@ -1,0 +1,52 @@
+{
+  "name": "@doomscrollr/api",
+  "version": "0.1.0",
+  "description": "Typed JavaScript/TypeScript client for the DOOMSCROLLR REST API.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "npm run build && node --test test/*.test.mjs",
+    "pack:dry": "npm pack --dry-run",
+    "prepublishOnly": "npm test"
+  },
+  "keywords": [
+    "doomscrollr",
+    "api",
+    "sdk",
+    "typescript",
+    "owned-audience",
+    "creator-economy",
+    "newsletter",
+    "commerce"
+  ],
+  "author": "DOOMSCROLLR",
+  "license": "MIT",
+  "homepage": "https://doomscrollr.com/api",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aaayersss/doomscrollr-api-js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/aaayersss/doomscrollr-api-js/issues"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "@types/node": "^25.6.0",
+    "typescript": "^6.0.3"
+  }
+}
