@@ -1,6 +1,6 @@
 {
   "name": "@doomscrollr/api",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Official typed JavaScript/TypeScript SDK for the DOOMSCROLLR REST API.",
   "type": "module",
   "main": "./dist/index.js",
@@ -25,24 +25,7 @@
     "prepublishOnly": "npm test"
   },
   "keywords": [
-    "doomscrollr",
-    "ai",
-    "doomscrollr-api",
-    "api-client",
-    "sdk",
-    "typescript",
-    "javascript",
-    "rest-api",
-    "owned-audience",
-    "creator-tools",
-    "creator-economy",
-    "newsletter",
-    "commerce",
-    "subscribers",
-    "link-in-bio",
-    "linktree",
-    "shopify",
-    "mcp"
+    "ai"
   ],
   "author": "DOOMSCROLLR",
   "license": "MIT",
