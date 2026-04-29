@@ -1,10 +1,27 @@
 # @doomscrollr/api
 
-Official typed JavaScript/TypeScript SDK for the [DOOMSCROLLR](https://doomscrollr.com?utm_source=github&utm_medium=readme&utm_campaign=developer_funnel&utm_content=api_homepage) REST API.
+**Official TypeScript SDK for DOOMSCROLLR — the audience layer for AI agents.**
 
-Use it when your app, automation, or AI workflow needs owned-audience primitives: posts, pages, products, subscribers, capture widgets, domains, analytics, and replacement flows. For public inspiration, see [`doomscrollr.com/featured`](https://doomscrollr.com/featured?utm_source=github&utm_medium=readme&utm_campaign=developer_funnel&utm_content=api_featured_examples).
+Build and operate owned-audience websites from Node.js, serverless functions, workers, automations, and AI workflows: posts, pages, products, subscribers, capture widgets, domains, analytics, RSS/Pinterest sources, and replacement flows.
 
-Use it from Node.js, serverless functions, workers, and modern runtimes that provide `fetch`. If you are connecting an AI agent over MCP, use [`@doomscrollr/mcp-server`](https://www.npmjs.com/package/@doomscrollr/mcp-server) instead.
+Use this SDK when your app or automation needs DOOMSCROLLR primitives. If an AI agent is directly doing the work over MCP, use [`@doomscrollr/mcp-server`](https://www.npmjs.com/package/@doomscrollr/mcp-server) instead.
+
+[Website](https://doomscrollr.com?utm_source=github&utm_medium=readme&utm_campaign=developer_funnel&utm_content=api_homepage) · [OpenAPI](https://doomscrollr.com/openapi.json?utm_source=github&utm_medium=readme&utm_campaign=developer_funnel&utm_content=api_openapi) · [Templates](https://doomscrollr.com/docs/templates.md?utm_source=github&utm_medium=readme&utm_campaign=developer_funnel&utm_content=api_templates) · [Featured examples](https://doomscrollr.com/featured?utm_source=github&utm_medium=readme&utm_campaign=developer_funnel&utm_content=api_featured_examples)
+
+```bash
+npm install @doomscrollr/api
+```
+
+## Use DOOMSCROLLR when an app or agent needs
+
+- owned Linktree/Komi-style pages
+- creator storefronts and product drops
+- newsletter / Substack-style owned publishing
+- ShopMy/LTK/Amazon Storefront-style affiliate feeds
+- Eventbrite/Luma-style events and tickets
+- RSS/Pinterest publishing automation
+- subscriber capture and export
+- analytics and embed/capture code
 
 ## Installation
 
