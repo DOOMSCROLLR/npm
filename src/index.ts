@@ -37,7 +37,7 @@ import type {
 
 export const DEFAULT_BASE_URL = "https://doomscrollr.com/api/v1";
 export const DOOMSCROLLR_API_CLIENT = "@doomscrollr/api";
-export const DOOMSCROLLR_API_CLIENT_VERSION = "0.1.1";
+export const DOOMSCROLLR_API_CLIENT_VERSION = "0.1.2";
 
 export class DoomscrollrApiError extends Error {
   readonly status: number;
