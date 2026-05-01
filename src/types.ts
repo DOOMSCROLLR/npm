@@ -102,6 +102,7 @@ export interface Post {
   url?: string | null;
   image?: string | null;
   status?: PostStatus | string;
+  shoppable?: boolean;
   tags?: unknown[];
   created_at?: string;
   updated_at?: string;
@@ -121,6 +122,8 @@ export interface CreateLinkPostParams {
   tags?: string;
   status?: PostStatus;
   publish_at?: string;
+  /** Show a buy button on this post. Useful for product/Shopify/commerce links. */
+  shoppable?: boolean;
 }
 
 export interface CreateImagePostParams {
@@ -130,6 +133,23 @@ export interface CreateImagePostParams {
   tags?: string;
   status?: PostStatus;
   publish_at?: string;
+  /** Show a buy button on this post. */
+  shoppable?: boolean;
+}
+
+export interface BulkPostUpdateParams {
+  ids: number[];
+  title?: string;
+  description?: string;
+  status?: PostStatus;
+  publish_at?: string;
+  tags?: string;
+  tag_mode?: "replace" | "append" | "remove";
+  hide_main_feed?: boolean;
+  subscription_only?: boolean;
+  /** Show or hide the buy button on all selected posts. */
+  shoppable?: boolean;
+  [key: string]: unknown;
 }
 
 export interface BulkIdsParams {

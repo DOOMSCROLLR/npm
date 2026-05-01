@@ -4,6 +4,7 @@ import type {
   BuildFlowParams,
   BuildLinksFlowParams,
   BulkIdsParams,
+  BulkPostUpdateParams,
   CaptureSettingsUpdate,
   CreateContactPageParams,
   CreateImagePostParams,
@@ -186,8 +187,8 @@ export class DoomscrollrApi {
     return this.request<{ ok?: boolean }>("DELETE", `/posts/${id}`, undefined, options);
   }
 
-  bulkUpdatePosts(params: Record<string, unknown>, options?: RequestOptions) {
-    return this.request("PATCH", "/posts/bulk", params, options);
+  bulkUpdatePosts(params: BulkPostUpdateParams, options?: RequestOptions) {
+    return this.request("PATCH", "/posts/bulk", params as unknown as Record<string, unknown>, options);
   }
 
   bulkDeletePosts(idsOrParams: number[] | BulkIdsParams, options?: RequestOptions) {
